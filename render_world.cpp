@@ -19,11 +19,20 @@ Render_World::~Render_World()
 }
 
 // Find and return the Hit structure for the closest intersection.  Be careful
-// to ensure that hit.dist>=small_t.
+// to ensure that hit.dist>=small_t
 Hit Render_World::Closest_Intersection(const Ray& ray)
 {
-    TODO;
-    return {};
+
+    float min_t = std::numeric_limits<float>::min();
+    Hit closest_hit;
+    for(int i =0; i < objects.size(); i++){
+        Hit temp_hit = objects[i]->Intersection(ray,0);
+        if(temp_hit.dist < closest_hit.dist && temp_hit.dist > min_t ){
+            closest_hit = temp_hit;
+        }       
+    }
+
+    return closest_hit;
 }
 
 // set up the initial view ray and call
@@ -55,7 +64,19 @@ void Render_World::Render()
 vec3 Render_World::Cast_Ray(const Ray& ray,int recursion_depth)
 {
     vec3 color;
-    TODO; // determine the color here
+    Hit hit = Closest_Intersection(ray);
+    if(hit.object != NULL){
+        color = hit.object->
+        material_shader->
+        Shade_Surface(ray,ray.Point(hit.dist),
+        hit.object->Normal(ray.Point(hit.dist),0),recursion_depth);
+
+    }
+    else{
+        color = background_shader->
+        Shade_Surface(ray,vec3(0,0,0),
+        vec3(0,0,0),recursion_depth);
+    }
     return color;
 }
 
