@@ -2,7 +2,7 @@ box.o
 camera.o
 dump_png.o
 flat_shader.o
-heirarchy.o
+hierarchy.o
 main.o
 mesh.o
 parse.o
@@ -12,3 +12,4 @@ reflective_shader.o
 render_world.o
 sphere.o
 ray_tracer
+.sconsign.dblite
