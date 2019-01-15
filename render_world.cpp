@@ -24,11 +24,13 @@ Hit Render_World::Closest_Intersection(const Ray& ray)
 {
 
     float min_t = std::numeric_limits<float>::min();
+
     Hit closest_hit;
     for(int i =0; i < objects.size(); i++){
         Hit temp_hit = objects[i]->Intersection(ray,0);
-        if(temp_hit.dist < closest_hit.dist && temp_hit.dist > min_t ){
+        if(temp_hit.dist < min_t && temp_hit.dist > small_t ){
             closest_hit = temp_hit;
+			min_t = temp_hit.dist;
         }       
     }
 
@@ -41,9 +43,7 @@ void Render_World::Render_Pixel(const ivec2& pixel_index)
     // set up the initial view ray here
     vec3 direction = (camera.World_Position(pixel_index)- camera.position).normalized();
         
-    Ray ray;
-    ray.endpoint = camera.position;
-    ray.direction = direction;
+    Ray ray(camera.position,direction);
 
     vec3 color=Cast_Ray(ray,1);
     camera.Set_Pixel(pixel_index,Pixel_Color(color));
