@@ -1,0 +1,14 @@
+box.o
+camera.o
+dump_png.o
+flat_shader.o
+heirarchy.o
+main.o
+mesh.o
+parse.o
+phong_shader.o
+plane.o
+reflective_shader.o
+render_world.o
+sphere.o
+
