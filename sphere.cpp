@@ -15,9 +15,27 @@ Hit Sphere::Intersection(const Ray& ray, int part) const
 
 	if (discriminant >= 0) {
 		std::cout << "Sphere was hit" << std::endl;
-		float t = std::min( -b + sqrt(discriminant), -b - sqrt(discriminant));
-		result.object = this;
-		result.dist = t;
+		float t_1 = -b + sqrt(discriminant);
+		float t_2 = -b - sqrt(discriminant);
+		if (t_1 >= 0 && t_2 >= 0) {
+			float t = std::min(t_1, t_2);
+			result.object = this;
+			result.dist = t;
+		}
+		else if (t_1 >= 0 && t_2 < 0) {
+			result.object = this;
+			result.dist = t_1;
+
+		}
+		else if (t_2 >= 0 && t_1 < 0) {
+			result.object = this;
+			result.dist = t_2;
+
+		}
+		else {
+			result.object = NULL;
+		}
+		
 	}
 	else
 	{
@@ -31,7 +49,7 @@ vec3 Sphere::Normal(const vec3& point, int part) const
 {
     vec3 normal;
     // compute the normal direction
-	TODO;
+	normal = (point - center).normalized();
     return normal;
 }
 

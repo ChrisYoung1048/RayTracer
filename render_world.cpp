@@ -70,6 +70,7 @@ vec3 Render_World::Cast_Ray(const Ray& ray,int recursion_depth)
 {
     vec3 color;
     Hit hit = Closest_Intersection(ray);
+
     if(hit.object != NULL){
         color = hit.object->
         material_shader->
