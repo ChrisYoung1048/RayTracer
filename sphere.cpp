@@ -9,7 +9,7 @@ Hit Sphere::Intersection(const Ray& ray, int part) const
 	Hit result;
 	vec3 ray_to_sphere = ray.endpoint - center;
 	float b = dot(ray.direction, ray_to_sphere);
-	float discriminant = pow(b,2) - ray_to_sphere.magnitude_squared() + pow(radius,2);
+	float discriminant = (b*b) - ray_to_sphere.magnitude_squared() + (radius * radius);
 
 	//std::cout << "Discriminant was " << discriminant << std::endl;
 
