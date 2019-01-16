@@ -13,3 +13,4 @@ render_world.o
 sphere.o
 ray_tracer
 .sconsign.dblite
+/grading
