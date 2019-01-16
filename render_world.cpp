@@ -43,9 +43,11 @@ void Render_World::Render_Pixel(const ivec2& pixel_index)
     // set up the initial view ray here
     vec3 direction = (camera.World_Position(pixel_index)- camera.position).normalized();
         
-    Ray ray(camera.position,direction);
+    Ray ray;
+	ray.endpoint = camera.position;
+	ray.direction = direction;
 
-    vec3 color=Cast_Ray(ray,1);
+    vec3 color=Cast_Ray(ray,-1);
     camera.Set_Pixel(pixel_index,Pixel_Color(color));
 }
 
