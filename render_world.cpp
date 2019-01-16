@@ -26,14 +26,13 @@ Hit Render_World::Closest_Intersection(const Ray& ray)
     float min_t = std::numeric_limits<float>::min();
 
     Hit closest_hit;
-	std::cout << "Iterating Through " << objects.size() <<" Objects" << std::endl;
+	//std::cout << "Iterating Through " << objects.size() <<" Objects" << std::endl;
 	
     for(int i =0; i < objects.size(); i++){
 		
         Hit temp_hit = objects[i]->Intersection(ray,-1);
 
         if(temp_hit.dist < min_t && temp_hit.dist >= small_t ){
-			std::cout << "New Closest Hit at "<< temp_hit.dist << std::endl;
 			closest_hit = temp_hit;
 			min_t = temp_hit.dist;
         }       
