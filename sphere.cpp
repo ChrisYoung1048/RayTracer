@@ -11,7 +11,10 @@ Hit Sphere::Intersection(const Ray& ray, int part) const
 	float b = dot(ray.direction, ray_to_sphere);
 	float discriminant = pow(b,2) - ray_to_sphere.magnitude_squared() + pow(radius,2);
 
+	std::cout << "Discriminant was " << discriminant << std::endl;
+
 	if (discriminant >= 0) {
+		std::cout << "Sphere was hit" << std::endl;
 		float t = std::min( -b + sqrt(discriminant), -b - sqrt(discriminant));
 		result.object = this;
 		result.dist = t;
