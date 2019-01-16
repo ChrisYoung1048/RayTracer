@@ -28,8 +28,7 @@ vec3 Sphere::Normal(const vec3& point, int part) const
 {
     vec3 normal;
     // compute the normal direction
-	normal = (point - center).normalized();
-
+	TODO;
     return normal;
 }
 
