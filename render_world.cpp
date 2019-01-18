@@ -26,20 +26,21 @@ Hit Render_World::Closest_Intersection(const Ray& ray)
     float min_t = std::numeric_limits<float>::max();
 
     Hit closest_hit;
-	  closest_hit.object = NULL;
+	closest_hit.object = NULL;
 
     for(unsigned i =0; i < objects.size(); i++){
 		
-		Hit temp_hit = objects[i]->Intersection(ray,-1);
-		if (temp_hit.object != NULL) {
-			if (temp_hit.dist < min_t && temp_hit.dist > small_t) {
-
-				closest_hit = temp_hit;
-				min_t = temp_hit.dist;
-
-			}
-		}
+  		Hit temp_hit = objects[i]->Intersection(ray,-1);
+     
+  		if (temp_hit.object != NULL) {
+     
+  			if (temp_hit.dist < min_t && temp_hit.dist > small_t) {
+  				closest_hit = temp_hit;
+  				min_t = temp_hit.dist;
+  			}
+  		}
     }
+
 
     return closest_hit;
 }
@@ -49,10 +50,9 @@ void Render_World::Render_Pixel(const ivec2& pixel_index)
 {
     // set up the initial view ray here
     vec3 direction = (camera.World_Position(pixel_index)- camera.position).normalized();
-        
     Ray ray;
-	  ray.endpoint = camera.position;
-	  ray.direction = direction;
+	ray.endpoint = camera.position;
+	ray.direction = direction;
 
     vec3 color=Cast_Ray(ray,1);
     camera.Set_Pixel(pixel_index,Pixel_Color(color));
@@ -78,7 +78,7 @@ vec3 Render_World::Cast_Ray(const Ray& ray,int recursion_depth)
     if(hit.object != NULL){
 		
         color = hit.object-> material_shader->
-        Shade_Surface(ray,ray.Point(hit.dist),hit.object->Normal(ray.Point(hit.dist),0),recursion_depth);
+        Shade_Surface(ray,ray.Point(hit.dist),hit.object->Normal(ray.Point(hit.dist),-1),recursion_depth);
 
     }
     else{

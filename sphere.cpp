@@ -7,7 +7,9 @@
 Hit Sphere::Intersection(const Ray& ray, int part) const
 {
 	Hit result;
-	vec3 ray_to_sphere = ray.endpoint - center;
+	result.object = NULL;
+
+	vec3 ray_to_sphere = ray.endpoint - this->center;
 
 	float a = dot(ray.direction,ray.direction);
 	float b = 2 * dot(ray.direction, ray_to_sphere);
@@ -18,37 +20,32 @@ Hit Sphere::Intersection(const Ray& ray, int part) const
 
 	if (discriminant > 0) {
 
-		float t_1 = -b + sqrt(discriminant);
-		float t_2 = -b - sqrt(discriminant);
+		float t_1 = (-b + sqrt(discriminant))/(2 * a);
+		float t_2 = (-b - sqrt(discriminant))/(2 * a);
 
-		if (t_1 >= 0 && t_2 >= 0) {
+		if (t_1 >= small_t && t_2 >= small_t) {
 
 			float t = std::min(t_1, t_2);
 			result.object = this;
 			result.dist = t;
 			
 		}
-		else if (t_1 >= 0 && t_2 < 0) {
+		else if (t_1 >= small_t && t_2 < small_t) {
 
 			result.object = this;
 			result.dist = t_1;
-
 		}
-		else if (t_2 >= 0 && t_1 < 0) {
+		else if (t_2 >= small_t && t_1 < small_t) {
 
 			result.object = this;
 			result.dist = t_2;
-
 		}
 		else {
 			result.object = NULL;
 		}
 		
 	}
-	else
-	{
-		result.object = NULL;
-	}
+
 
     return result;
 }

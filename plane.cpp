@@ -9,29 +9,22 @@
 Hit Plane::Intersection(const Ray& ray, int part) const
 {
 	Hit result;
+	result.object = NULL;
 
-	vec3 ray_to_point = x1 - ray.endpoint;
-	float ray_normal_dot = dot(ray.direction, normal);
+	vec3 ray_pnt = ray.endpoint;;
+	vec3 ray_dir = ray.direction;
+	vec3 plane_pnt = this->x1;
+	vec3 plane_norm = this->normal;
 
-	if (ray_normal_dot != 0) {
-		float t = dot(ray_to_point, normal) / ray_normal_dot;
+	if (dot(ray_dir,plane_norm) != 0) {
+		float t = dot(plane_pnt - ray_pnt, plane_norm) / dot(ray_dir, plane_norm);
    
 		if (t > small_t) {
 			result.object = this;
 			result.dist = t;
-		
-		}
-		else {
-			result.object = NULL;
-		
 		}
 
 	}
-	else {
-		result.object = NULL;
-	
-	}
-
 
     return result;
 }
