@@ -1,0 +1,31 @@
+Extra Credit - Dishon Jordan
+
+Implemented Refraction using Snell's law and the method shown in class.
+
+Files Modified:
+-Added refractive_shader.h
+	Created a header file for the refractive shader.
+	Very similar to reflective_shader.h except the member variable is refractivity instead of reflexivity
+	
+-Added refractive_shader.cpp
+	Implemented the Shade_Surface function with n1 in Snell's law being air and n2 being the refractivity 
+	of the object.
+	Compute the refracted ray as described in class and called Cast_Ray on it and returned that color
+
+-Modified SConstruct
+	Added refractive_shader.cpp to the compile list
+
+-Modified parse.cpp
+	Added an else if statement to detect a refractive_shader and create one
+
+-Added 30.txt
+	Run with ./ray_tracer -i 30.txt
+	This test contains a refractive sphere in front of 3 other normal spheres to show that the refraction
+	is working properly with other objects in the scene.
+	View the output in output.png
+
+-Added 31.txt
+	Run with ./ray_tracer -i 31.txt
+	This test contains 3 refractive sphere and a horizontal and vertical plane. Each sphere has a different
+	index of refraction thus showing the effect of changing this value.
+	View the output in output.png

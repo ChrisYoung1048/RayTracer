@@ -42,16 +42,66 @@ void Mesh::Read_Obj(const char* file)
 // Check for an intersection against the ray.  See the base class for details.
 Hit Mesh::Intersection(const Ray& ray, int part) const
 {
-    TODO;
-    return {};
+
+	Hit result;
+	result.object = NULL;
+
+	if (part >= 0) {
+		double temp_dist;
+
+		if (Intersect_Triangle(ray, part, temp_dist)) {
+			result.object = this;
+			result.dist = temp_dist;
+			result.part = part;
+		}
+	}
+	else {
+		float min_t = std::numeric_limits<float>::max();
+
+		double temp_dist;
+		for (int i = 0; i < triangles.size(); i++) {
+			if (Intersect_Triangle(ray, i, temp_dist)) {
+				if (temp_dist < min_t) {
+					result.object = this;
+					result.dist = temp_dist;
+					result.part = i;
+					min_t = temp_dist;
+				}
+				if (debug_pixel) {
+					std::cout << "Intersected with part " << i << " dist:" << temp_dist <<std::endl;
+				}
+			
+			}
+		
+		}
+	
+	
+	}
+	   	  
+	if (debug_pixel) {
+		std::cout << "dist: " << result.dist << std::endl;
+	}
+
+ 
+    return result;
 }
 
 // Compute the normal direction for the triangle with index part.
 vec3 Mesh::Normal(const vec3& point, int part) const
 {
     assert(part>=0);
-    TODO;
-    return vec3();
+	vec3 normal;
+	ivec3 current_triangle = triangles[part];
+	vec3 vertex_a = vertices[current_triangle[0]];
+	vec3 vertex_b = vertices[current_triangle[1]];
+	vec3 vertex_c = vertices[current_triangle[2]];
+
+	vec3 ac = vertex_c - vertex_a;
+	vec3 ab = vertex_b - vertex_a;
+
+	normal = cross(ab, ac).normalized();
+
+    return normal;
 }
 
 // This is a helper routine whose purpose is to simplify the implementation
@@ -68,8 +118,33 @@ vec3 Mesh::Normal(const vec3& point, int part) const
 // two triangles.
 bool Mesh::Intersect_Triangle(const Ray& ray, int tri, double& dist) const
 {
-    TODO;
-    return false;
+	bool result = false;
+	ivec3 current_triangle = triangles[tri];
+	vec3 vertex_a = vertices[current_triangle[0]];
+	vec3 vertex_b = vertices[current_triangle[1]];
+	vec3 vertex_c = vertices[current_triangle[2]];
+
+	vec3 u = ray.direction.normalized();
+	vec3 v = vertex_b - vertex_a;
+	vec3 w = vertex_c - vertex_a;
+	vec3 y = ray.endpoint - vertex_a;
+
+	float denom = dot(cross(u, v), w);
+
+	float t = -(dot(cross(v, w),y)) / (dot(cross(v, w),u));
+	
+	if (t > small_t) {
+
+		float beta = dot(cross(w, u), y) / denom;
+		float gamma = dot(cross(u, v), y) / denom;
+
+		if (beta > weight_tolerance && gamma > weight_tolerance && (1 - gamma - beta) > weight_tolerance) {
+
+			result = true;
+			dist = t;
+		}
+	}
+    return result;
 }
 
 // Compute the bounding box.  Return the bounding box of only the triangle whose

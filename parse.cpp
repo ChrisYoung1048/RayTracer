@@ -8,6 +8,7 @@
 #include "plane.h"
 #include "point_light.h"
 #include "reflective_shader.h"
+#include "refractive_shader.h"
 #include "render_world.h"
 #include "sphere.h"
 #include "spot_light.h"
@@ -108,6 +109,14 @@ void Parse(Render_World& world,int& width,int& height,const char* test_file)
             assert(sh!=shaders.end());
             shaders[name]=new Reflective_Shader(world,sh->second,f0);
         }
+		else if (item == "refractive_shader")
+		{
+			ss >> name >> s0 >> f0;
+			assert(ss);
+			std::map<std::string, Shader*>::const_iterator sh = shaders.find(s0);
+			assert(sh != shaders.end());
+			shaders[name] = new Refractive_Shader(world, sh->second, f0);
+		}
         else if(item=="point_light")
         {
             ss>>u>>s0>>f0;
